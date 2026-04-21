@@ -12,8 +12,13 @@ from google.genai import types
 app = FastAPI(title="CivicSmart EPE Assistant")
 
 # Initialize Gemini Client
+api_key = os.environ.get("GOOGLE_API_KEY")
 try:
-    client = genai.Client(api_key="AIzaSyCVCFe6dH2cQrcj5jxAyEP7N87VHgI64pQ")
+    if not api_key:
+        print("Warning: GOOGLE_API_KEY environment variable not set.")
+        client = None
+    else:
+        client = genai.Client(api_key=api_key)    
 except Exception as e:
     print(f"Warning: Failed to initialize Gemini Client: {e}")
     client = None
